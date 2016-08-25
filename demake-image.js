@@ -3,6 +3,15 @@ var probable = require('probable');
 
 function demakeImage(opts, done) {
   var {buffer, width, height} = opts;
+
+  // If there's no dimensions, just guess.
+  if (!width) {
+    width = 640;
+  }
+  if (!height) {
+    height = 640;
+  }
+
   Jimp.read(buffer, manipulateImage);
 
   function manipulateImage(error, image) {

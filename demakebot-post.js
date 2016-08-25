@@ -8,6 +8,8 @@ var getImageFromConcepts = require('./get-image-from-concepts');
 var demakeImage = require('./demake-image');
 var async = require('async');
 var postImageToTwitter = require('post-image-to-twitter');
+var probable = require('probable');
+var getRandomApodImage = require('./get-random-apod-image');
 
 var dryRun = false;
 var tryCount = 0;
@@ -27,16 +29,21 @@ function go() {
     apiKey: config.wordnikAPIKey
   });
 
-  async.waterfall(
-    [
-      getConcepts,
-      getImageFromConcepts,
-      unpackImagePackage,
-      demakeImage,
-      postImage
-    ],
-    wrapUp
-  );
+  var tasks;
+  var commonTasks = [
+    unpackImagePackage,
+    demakeImage,
+    postImage
+  ];
+
+  if (probable.roll(8) === 0) {
+    tasks = [getRandomApodImage].concat(commonTasks);
+  }
+  else {
+    tasks = [getConcepts, getImageFromConcepts].concat(commonTasks);
+  }
+
+  async.waterfall(tasks, wrapUp);
 
   function getConcepts(done) {
     var opts = {
