@@ -1,7 +1,7 @@
 demakebot
 =============
 
-A bot that finds Pokémon everywhere! Starting with the NYPL Digital Collections and the parts of space covered by the Astronomy Picture of the Day.
+I like to demake images!
 
 Installation
 ------------
