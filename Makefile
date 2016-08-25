@@ -10,7 +10,7 @@ pushall: sync
 
 sync:
 	rsync -a $(HOMEDIR) $(USER)@$(SERVER):/opt/ --exclude node_modules/ --exclude image-output/
-	# $(SSHCMD) "cd $(APPDIR) && npm install"
+	$(SSHCMD) "cd $(APPDIR) && npm install"
 
 # check-log:
 	# $(SSHCMD) "journalctl -r -u $(PROJECTNAME)"
@@ -23,6 +23,9 @@ run-multiple:
 
 run-dry-on-server:
 	$(SSHCMD) "cd $(APPDIR) && node demakebot-post.js --dry"
+
+run-on-server:
+	$(SSHCMD) "cd $(APPDIR) && node demakebot-post.js"
 
 get-image-output-from-server:
 	$(SSHCMD) "cd $(APPDIR) && tar zcvf image-output.tgz image-output/*"
