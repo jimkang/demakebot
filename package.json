@@ -1,0 +1,39 @@
+{
+  "name": "demakebot",
+  "version": "1.0.0",
+  "description": "Doo-doo-doo!",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jimkang/demakebot.git"
+  },
+  "keywords": [],
+  "author": "Jim Kang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jimkang/demakebot/issues"
+  },
+  "homepage": "https://github.com/jimkang/demakebot",
+  "devDependencies": {
+    "eslint": "^3.3.1"
+  },
+  "dependencies": {
+    "async": "^2.0.1",
+    "call-next-tick": "^1.1.2",
+    "g-i-s": "^2.0.0",
+    "jimp": "^0.2.27",
+    "lodash.findwhere": "^3.1.0",
+    "lodash.pluck": "^3.1.2",
+    "object-path-exists": "^1.0.0",
+    "pick-first-good-url": "^2.0.0",
+    "post-image-to-twitter": "^1.0.0",
+    "probable": "^2.0.1",
+    "request": "^2.73.0",
+    "tumblrwks": "^0.3.0",
+    "twit": "^2.2.4",
+    "wordnok": "^3.2.0"
+  }
+}
