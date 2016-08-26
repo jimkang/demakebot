@@ -28,9 +28,11 @@ function demakeImage(opts, done) {
     }
     else {
       var scaleDownSize;
+      var scaleUpSize;
+      var exponent;
 
       if (probable.roll(20) === 0) {
-        scaleDownSize = probable.roll(4) === 0 ? 4 : 8;
+        exponent = probable.roll(4) === 0 ? 2 : 3;
       }
       else {
         var largestOriginalDimension = width;
@@ -38,18 +40,24 @@ function demakeImage(opts, done) {
           largestOriginalDimension = height;
         }
         var nearestPowerOf2 = ~~(Math.log2(largestOriginalDimension));
-        var exponent = Math.round(nearestPowerOf2 * 2/3);
+        exponent = Math.round(nearestPowerOf2 * 0.6);
 
         if (exponent < 2) {
           exponent = 2;
         }
-        scaleDownSize = Math.pow(2, exponent);
       }
 
-      console.log('width', width, 'height', height, 'scaleDownSize', scaleDownSize);
+      scaleDownSize = Math.pow(2, exponent);
+      scaleUpSize = Math.pow(2, exponent + 3 + probable.roll(5));
+
+      console.log(
+        'width', width, 'height', height,
+        'exponent', exponent,
+        'scaleDownSize', scaleDownSize, 'scaleUpSize', scaleUpSize
+      );
 
       image.scaleToFit(scaleDownSize, scaleDownSize, Jimp.RESIZE_NEAREST_NEIGHBOR);
-      image.scaleToFit(640, 640, Jimp.RESIZE_NEAREST_NEIGHBOR);
+      image.scaleToFit(scaleUpSize, scaleUpSize, Jimp.RESIZE_NEAREST_NEIGHBOR);
       image.getBuffer(Jimp.MIME_PNG, done);
     }
   }
