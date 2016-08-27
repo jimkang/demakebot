@@ -30,7 +30,8 @@ function composeDemakeBotReply(incomingTweet, outerDone) {
   }
   else {
     // TODO.
-    callNextTick(outerDone, null, {text:  '@' +  incomingTweet.user.screen_name + ' Hey!'});
+    // callNextTick(outerDone, null, {text:  '@' +  incomingTweet.user.screen_name + ' Hey!'});
+    callNextTick(outerDone, new Error('TODO'));
   }
 }
 
