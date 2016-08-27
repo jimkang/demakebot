@@ -11,7 +11,8 @@ pushall: sync set-permissions restart-remote
 	git push origin master
 
 sync:
-	rsync -a $(HOMEDIR) $(USER)@$(SERVER):/opt/ --exclude node_modules/ --exclude image-output/
+	rsync -a $(HOMEDIR) $(USER)@$(SERVER):/opt/ \
+		--exclude node_modules/ --exclude image-output/ --exclude data/
 	$(SSHCMD) "cd $(APPDIR) && npm install"
 
 set-permissions:
