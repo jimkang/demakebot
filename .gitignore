@@ -4,3 +4,4 @@ config.js
 test-config.js
 tests/integration/image-output
 image-output
+data/*.db

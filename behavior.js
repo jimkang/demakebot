@@ -1,5 +1,5 @@
 var behavior = {
-  hoursToWaitBetweenRepliesToSameUser: 25,
+  hoursToWaitBetweenRepliesToSameUser: 2,
   twitterUsername: 'demakebot',
   maxCommonness: 5000,
   numberOfImageResultToConsider: 100

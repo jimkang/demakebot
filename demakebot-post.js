@@ -1,15 +1,14 @@
 /* global process */
 var Twit = require('twit');
 var callNextTick = require('call-next-tick');
-var fs = require('fs');
 var config = require('./config');
 var createWordnok = require('wordnok').createWordnok;
 var getImageFromConcepts = require('./get-image-from-concepts');
 var demakeImage = require('./demake-image');
 var async = require('async');
-var postImageToTwitter = require('post-image-to-twitter');
 var probable = require('probable');
 var getRandomApodImage = require('./get-random-apod-image');
+var PostImage = require('./post-image');
 
 var dryRun = false;
 var tryCount = 0;
@@ -33,7 +32,7 @@ function go() {
   var commonTasks = [
     unpackImagePackage,
     demakeImage,
-    postImage
+    post
   ];
 
   if (probable.roll(8) === 0) {
@@ -67,26 +66,13 @@ function go() {
     callNextTick(done, null, demakeOpts);
   }
 
-  function postImage(buffer, done) {
-    var postImageOpts = {
+  function post(buffer, done) {
+    PostImage({
       twit: twit,
       dryRun: dryRun,
-      base64Image: buffer.toString('base64'),
       altText: concept,
       caption: concept
-    };
-
-    if (dryRun) {
-      const filename = 'image-output/would-have-posted-' +
-        (new Date()).toISOString().replace(/:/g, '-') +
-        '.png';
-      console.log('Writing out', filename, 'for concept:', concept);
-      fs.writeFileSync(filename, buffer);
-      process.exit();
-    }
-    else {
-      postImageToTwitter(postImageOpts, done);
-    }
+    })(buffer, done);
   }
 }
 
