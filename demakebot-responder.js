@@ -18,7 +18,7 @@ if (process.argv.length > 2) {
 var kit = ReplyDecisionKit({
   username: behavior.twitterUsername,
   kitDbPath: __dirname + '/data/demakebot-replies.db',
-  hoursToWaitBetweenRepliesToSameUser: 1
+  secondsToWaitBetweenRepliesToSameUser: behavior.secondsToWaitBetweenRepliesToSameUser
 });
 
 var twit = new Twit(config.twitter);
