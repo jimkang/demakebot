@@ -4,15 +4,15 @@ var behavior = {
   maxCommonness: 2000,
   numberOfImageResultToConsider: 100,
   chimeInUsers: [
-    'bpearth',
-    'ffd8ffdb',
-    'unchartedatlas',
-    'linkfinds',
-    'pokemon_nypl',
-    'metalband_exe',
-    'jpegbot',
+	  //'bpearth',
+	  //'ffd8ffdb',
+	  //'unchartedatlas',
+	  //'linkfinds',
+	  //'pokemon_nypl',
+	  //'metalband_exe',
+	  //'jpegbot',
     'deathmtn',
-    'archillect'
+    //'archillect'
   ]
 };
 
