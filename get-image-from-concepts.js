@@ -23,7 +23,11 @@ function getImageFromConcepts(concepts, allDone) {
   function searchGIS(concept, done) {
     var gisOpts = {
       searchTerm: concept
-    };    
+    };
+
+    if (probable.roll(2) === 0) {
+      gisOpts.searchTerm += ' art';
+    }
 
     var tbsValues = [];
 

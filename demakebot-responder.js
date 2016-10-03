@@ -9,6 +9,9 @@ var behavior = require('./behavior');
 var composeDemakebotReply = require('./compose-demakebot-reply');
 var ReplyDecisionKit = require('reply-decision-kit');
 var PostImage = require('./post-image');
+var betterKnowATweet = require('better-know-a-tweet');
+
+var username = behavior.twitterUsername;
 
 var dryRun = false;
 if (process.argv.length > 2) {
@@ -18,7 +21,8 @@ if (process.argv.length > 2) {
 var kit = ReplyDecisionKit({
   username: behavior.twitterUsername,
   kitDbPath: __dirname + '/data/demakebot-replies.db',
-  secondsToWaitBetweenRepliesToSameUser: behavior.secondsToWaitBetweenRepliesToSameUser
+  secondsToWaitBetweenRepliesToSameUser: behavior.secondsToWaitBetweenRepliesToSameUser,
+  mustMentionSelf: false
 });
 
 var twit = new Twit(config.twitter);
@@ -36,6 +40,7 @@ function respondToTweet(incomingTweet) {
     [
       passTweet,
       kit.shouldReplyToTweet,
+      tweetMentionsSelfOrIsFromChimeInListMember,
       passTweet,
       composeDemakebotReply,
       postTweet,
@@ -48,10 +53,19 @@ function respondToTweet(incomingTweet) {
     callNextTick(done, null, incomingTweet);
   }
 
-  // function composeReply(done) {
-  //   // composeDemakebotReply(incomingTweet, done);
-  //   callNextTick(done, null, '@' + incomingTweet.user.screen_name + ' OK!');
-  // }
+  function tweetMentionsSelfOrIsFromChimeInListMember(done) {
+    if (doesTweetMentionBot(incomingTweet) ||
+      behavior.chimeInUsers
+        .indexOf(incomingTweet.user.screen_name.toLowerCase()) !== -1) {
+
+      callNextTick(done);
+    }
+    else {
+      callNextTick(
+        done, new Error('Tweet does not mention self and is not from a chime-in user.')
+      );
+    }
+  }
 
   function postTweet(content, done) {
     if (content.image) {
@@ -100,6 +114,15 @@ function wrapUp(error, data) {
       console.log('data:', data);
     }
   }
+}
+
+function doesTweetMentionBot(tweet) {
+  var usernames = betterKnowATweet.whosInTheTweet(tweet).map(lowerCase);
+  return usernames && usernames.indexOf(username.toLowerCase()) !== -1;
+}
+
+function lowerCase(s) {
+  return s.toLowerCase();
 }
 
 function logError(error) {
