@@ -9,19 +9,24 @@ var behavior = require('./behavior');
 var composeDemakebotReply = require('./compose-demakebot-reply');
 var ReplyDecisionKit = require('reply-decision-kit');
 var PostImage = require('./post-image');
-var betterKnowATweet = require('better-know-a-tweet');
-
-var username = behavior.twitterUsername;
+var curry = require('lodash.curry');
 
 var dryRun = false;
 if (process.argv.length > 2) {
   dryRun = (process.argv[2].toLowerCase() == '--dry');
 }
 
-var kit = ReplyDecisionKit({
+var defaultKit = ReplyDecisionKit({
   username: behavior.twitterUsername,
   kitDbPath: __dirname + '/data/demakebot-replies.db',
   secondsToWaitBetweenRepliesToSameUser: behavior.secondsToWaitBetweenRepliesToSameUser,
+  mustMentionSelf: true
+});
+
+var chimeInKit = ReplyDecisionKit({
+  username: behavior.twitterUsername,
+  kitDbPath: __dirname + '/data/demakebot-chimeins.db',
+  secondsToWaitBetweenRepliesToSameUser: behavior.hoursToWaitBetweenChimeIns * 3600,
   mustMentionSelf: false
 });
 
@@ -36,13 +41,22 @@ stream.on('tweet', respondToTweet);
 stream.on('error', logError);
 
 function respondToTweet(incomingTweet) {
+  var chimeInMode =
+    behavior.chimeInUsers.indexOf(incomingTweet.user.screen_name.toLowerCase()) !== -1;
+  var kit = defaultKit;
+  var prefix;
+
+  if (chimeInMode) {
+    kit = chimeInKit;
+    prefix = '👾';
+  }
+
   waterfall(
     [
       passTweet,
       kit.shouldReplyToTweet,
-      tweetMentionsSelfOrIsFromChimeInListMember,
       passTweet,
-      composeDemakebotReply,
+      curry(composeDemakebotReply)(prefix),
       postTweet,
       recordIncomingWasRepliedTo
     ],
@@ -51,20 +65,6 @@ function respondToTweet(incomingTweet) {
 
   function passTweet(done) {
     callNextTick(done, null, incomingTweet);
-  }
-
-  function tweetMentionsSelfOrIsFromChimeInListMember(done) {
-    if (doesTweetMentionBot(incomingTweet) ||
-      behavior.chimeInUsers
-        .indexOf(incomingTweet.user.screen_name.toLowerCase()) !== -1) {
-
-      callNextTick(done);
-    }
-    else {
-      callNextTick(
-        done, new Error('Tweet does not mention self and is not from a chime-in user.')
-      );
-    }
   }
 
   function postTweet(content, done) {
@@ -114,15 +114,6 @@ function wrapUp(error, data) {
       console.log('data:', data);
     }
   }
-}
-
-function doesTweetMentionBot(tweet) {
-  var usernames = betterKnowATweet.whosInTheTweet(tweet).map(lowerCase);
-  return usernames && usernames.indexOf(username.toLowerCase()) !== -1;
-}
-
-function lowerCase(s) {
-  return s.toLowerCase();
 }
 
 function logError(error) {

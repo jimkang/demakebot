@@ -3,7 +3,7 @@ var async = require('async');
 var request = require('request');
 var callNextTick = require('call-next-tick');
 
-function composeDemakeBotReply(incomingTweet, outerDone) {
+function composeDemakeBotReply(prefix, incomingTweet, outerDone) {
   if (incomingTweet.entities.media && incomingTweet.entities.media.length > 0) {
     var medium = incomingTweet.entities.media[0];
     var mediaURL = medium.media_url;
@@ -24,7 +24,8 @@ function composeDemakeBotReply(incomingTweet, outerDone) {
       incomingTweet: incomingTweet,
       mediaURL: mediaURL,
       width: width,
-      height: height
+      height: height,
+      prefix: prefix
     };    
     composeDemakeBotImageReply(imageReplyOpts, outerDone);
   }
@@ -40,12 +41,14 @@ function composeDemakeBotImageReply(opts, outerDone) {
   var width;
   var height;
   var incomingTweet;
+  var prefix;
 
   if (opts) {
     mediaURL = opts.mediaURL;
     width = opts.width;
     height = opts.height;
     incomingTweet = opts.incomingTweet;
+    prefix = opts.prefix;
   }
 
   async.waterfall(
@@ -80,6 +83,9 @@ function composeDemakeBotImageReply(opts, outerDone) {
       text: '@' +  incomingTweet.user.screen_name,
       image: buffer
     };
+    if (prefix) {
+      content.text = prefix + ' ' + content.text;
+    }
     callNextTick(done, null, content);
   }
 }
