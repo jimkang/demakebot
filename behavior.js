@@ -12,7 +12,8 @@ var behavior = {
     'metalband_exe',
     'jpegbot',
     'deathmtn',
-    'archillect'
+    'archillect',
+    'insecta_bot'
   ]
 };
 
