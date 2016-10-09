@@ -13,7 +13,8 @@ var behavior = {
     'jpegbot',
     'deathmtn',
     'archillect',
-    'insecta_bot'
+    'insecta_bot',
+    'pixelsorter'
   ]
 };
 
