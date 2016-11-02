@@ -14,7 +14,8 @@ var behavior = {
     'deathmtn',
     'archillect',
     'insecta_bot',
-    'pixelsorter'
+    'pixelsorter',
+    'primitivepic'
   ]
 };
 
