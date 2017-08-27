@@ -1,5 +1,5 @@
 var behavior = {
-  secondsToWaitBetweenRepliesToSameUser: 30,
+  secondsToWaitBetweenRepliesToSameUser: 20,
   hoursToWaitBetweenChimeIns: 4,
   twitterUsername: 'demakebot',
   maxCommonness: 2000,
@@ -15,7 +15,8 @@ var behavior = {
     'archillect',
     'insecta_bot',
     'pixelsorter',
-    'primitivepic'
+    'primitivepic',
+    'dasharez0ne'
   ]
 };
 
