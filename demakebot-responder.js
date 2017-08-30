@@ -48,7 +48,7 @@ function respondToTweet(incomingTweet) {
 
   if (chimeInMode) {
     kit = chimeInKit;
-    prefix = '👾';
+    prefix = undefined;
   }
 
   waterfall(
