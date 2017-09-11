@@ -35,7 +35,7 @@
     "post-image-to-twitter": "^1.0.0",
     "probable": "^2.0.1",
     "random-apod": "^1.0.1",
-    "reply-decision-kit": "^2.2.0",
+    "reply-decision-kit": "^2.2.1",
     "request": "^2.73.0",
     "tumblrwks": "^0.3.0",
     "twit": "^2.2.4",

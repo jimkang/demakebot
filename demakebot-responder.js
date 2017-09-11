@@ -20,7 +20,8 @@ var defaultKit = ReplyDecisionKit({
   username: behavior.twitterUsername,
   kitDbPath: __dirname + '/data/demakebot-replies.db',
   secondsToWaitBetweenRepliesToSameUser: behavior.secondsToWaitBetweenRepliesToSameUser,
-  mustMentionSelf: true
+  mustMentionSelf: true,
+  alwaysRespondToMentionsFrom: 'deathmtn'
 });
 
 var chimeInKit = ReplyDecisionKit({
