@@ -42,20 +42,13 @@ stream.on('tweet', respondToTweet);
 stream.on('error', logError);
 
 function respondToTweet(incomingTweet) {
-  var chimeInMode =
-    behavior.chimeInUsers.indexOf(incomingTweet.user.screen_name.toLowerCase()) !== -1;
-  var kit = defaultKit;
   var prefix;
-
-  if (chimeInMode) {
-    kit = chimeInKit;
-    prefix = undefined;
-  }
+  var kit;
 
   waterfall(
     [
       passTweet,
-      kit.shouldReplyToTweet,
+      shouldReplyToTweet,
       passTweet,
       curry(composeDemakebotReply)(prefix),
       postTweet,
@@ -66,6 +59,28 @@ function respondToTweet(incomingTweet) {
 
   function passTweet(done) {
     callNextTick(done, null, incomingTweet);
+  }
+
+  function shouldReplyToTweet(tweet, done) {
+    defaultKit.shouldReplyToTweet(tweet, checkDefaultAnswer);
+
+    function checkDefaultAnswer(error) {
+      if (error) {
+        // See if we should reply, chime-in-style.
+        if (behavior.chimeInUsers.indexOf(incomingTweet.user.screen_name.toLowerCase()) !== -1) {
+          prefix = undefined;
+          chimeInKit.shouldReplyToTweet(tweet, done);
+        }
+        else {
+          kit = chimeInKit;
+          callNextTick(done, error);
+        }
+      }
+      else {
+        kit = defaultKit;
+        done();
+      }
+    }
   }
 
   function postTweet(content, done) {
