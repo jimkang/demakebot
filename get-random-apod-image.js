@@ -13,8 +13,7 @@ function getRandomApodImage(done) {
   function packageImage(error, res) {
     if (error) {
       done(error);
-    }
-    else {
+    } else {
       var imagePackage = {
         concept: imageInfo.title,
         imgurl: imageInfo.image,

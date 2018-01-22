@@ -49,11 +49,9 @@ function getImageFromConcepts(concepts, allDone) {
     function checkGISResults(error, results) {
       if (error) {
         done(error, false);
-      }
-      else if (results.length < 1) {
+      } else if (results.length < 1) {
         done(null, false);
-      }
-      else {
+      } else {
         var imageResults = probable.shuffle(
           results.slice(0, behavior.numberOfImageResultToConsider)
         );
@@ -63,18 +61,16 @@ function getImageFromConcepts(concepts, allDone) {
           encoding: null
         };
 
-        pickFirstGoodURL(pickOpts, saveGoodImage);        
+        pickFirstGoodURL(pickOpts, saveGoodImage);
       }
 
       function saveGoodImage(error, goodURL, goodResponse) {
         if (error) {
           done(error);
-        }
-        else if (!goodURL) {
+        } else if (!goodURL) {
           done(null, false);
-        }
-        else {
-          var goodGISResult = findWhere(imageResults, {url: goodURL});
+        } else {
+          var goodGISResult = findWhere(imageResults, { url: goodURL });
           result = {
             concept: concept,
             imgurl: goodURL,
@@ -91,11 +87,9 @@ function getImageFromConcepts(concepts, allDone) {
   function passResult(error, found) {
     if (error) {
       allDone(error);
-    }
-    else if (!found) {
+    } else if (!found) {
       allDone(new Error('Could not find image for concepts.'));
-    }
-    else {
+    } else {
       allDone(null, result);
     }
   }
@@ -109,8 +103,7 @@ function isImageMIMEType(response, done) {
       isOKType = true;
     }
     callNextTick(done, null, isOKType);
-  }
-  else {
+  } else {
     callNextTick(done, null, false);
   }
 }

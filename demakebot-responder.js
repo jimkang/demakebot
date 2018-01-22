@@ -13,13 +13,14 @@ var curry = require('lodash.curry');
 
 var dryRun = false;
 if (process.argv.length > 2) {
-  dryRun = (process.argv[2].toLowerCase() == '--dry');
+  dryRun = process.argv[2].toLowerCase() == '--dry';
 }
 
 var defaultKit = ReplyDecisionKit({
   username: behavior.twitterUsername,
   kitDbPath: __dirname + '/data/demakebot-replies.db',
-  secondsToWaitBetweenRepliesToSameUser: behavior.secondsToWaitBetweenRepliesToSameUser,
+  secondsToWaitBetweenRepliesToSameUser:
+    behavior.secondsToWaitBetweenRepliesToSameUser,
   mustMentionSelf: true,
   alwaysRespondToMentionsFrom: 'deathmtn'
 });
@@ -27,7 +28,8 @@ var defaultKit = ReplyDecisionKit({
 var chimeInKit = ReplyDecisionKit({
   username: behavior.twitterUsername,
   kitDbPath: __dirname + '/data/demakebot-chimeins.db',
-  secondsToWaitBetweenRepliesToSameUser: behavior.hoursToWaitBetweenChimeIns * 3600,
+  secondsToWaitBetweenRepliesToSameUser:
+    behavior.hoursToWaitBetweenChimeIns * 3600,
   mustMentionSelf: false
 });
 
@@ -67,16 +69,18 @@ function respondToTweet(incomingTweet) {
     function checkDefaultAnswer(error) {
       if (error) {
         // See if we should reply, chime-in-style.
-        if (behavior.chimeInUsers.indexOf(incomingTweet.user.screen_name.toLowerCase()) !== -1) {
+        if (
+          behavior.chimeInUsers.indexOf(
+            incomingTweet.user.screen_name.toLowerCase()
+          ) !== -1
+        ) {
           prefix = undefined;
           chimeInKit.shouldReplyToTweet(tweet, done);
-        }
-        else {
+        } else {
           kit = chimeInKit;
           callNextTick(done, error);
         }
-      }
-      else {
+      } else {
         kit = defaultKit;
         done();
       }
@@ -92,8 +96,7 @@ function respondToTweet(incomingTweet) {
         caption: content.text
       });
       postImage(content.image, done);
-    }
-    else {
+    } else {
       postTextTweet(content.text, done);
     }
   }
@@ -103,12 +106,11 @@ function respondToTweet(incomingTweet) {
       console.log('Would have tweeted:', text);
       var mockTweetData = {
         user: {
-          id_str: 'mockuser',
+          id_str: 'mockuser'
         }
       };
       callNextTick(done, null, mockTweetData);
-    }
-    else {
+    } else {
       var body = {
         status: text,
         in_reply_to_status_id: incomingTweet.id_str
@@ -119,7 +121,7 @@ function respondToTweet(incomingTweet) {
 
   function recordIncomingWasRepliedTo(postedTweetData, done) {
     kit.recordThatReplyHappened(incomingTweet, done);
-  }  
+  }
 }
 
 function wrapUp(error, data) {

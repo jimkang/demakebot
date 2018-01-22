@@ -37,10 +37,9 @@ filteredFollowback(
       2300333096, // @ghost_things
       2869819060, // @mythologybot
       4406413835, // @metalband_exe
-      '775870976441589760', // @primitivepic
+      '775870976441589760' // @primitivepic
     ],
-    blacklist: [
-    ]
+    blacklist: []
   },
   reportResults
 );

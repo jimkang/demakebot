@@ -14,8 +14,7 @@ function composeDemakeBotReply(prefix, incomingTweet, outerDone) {
       mediaURL += ':thumb';
       width = medium.sizes.thumb.w;
       height = medium.sizes.thumb.h;
-    }
-    else if (medium.sizes.medium) {
+    } else if (medium.sizes.medium) {
       width = medium.sizes.medium.w;
       height = medium.sizes.medium.h;
     }
@@ -26,10 +25,9 @@ function composeDemakeBotReply(prefix, incomingTweet, outerDone) {
       width: width,
       height: height,
       prefix: prefix
-    };    
+    };
     composeDemakeBotImageReply(imageReplyOpts, outerDone);
-  }
-  else {
+  } else {
     // TODO.
     // callNextTick(outerDone, null, {text:  '@' +  incomingTweet.user.screen_name + ' Hey!'});
     callNextTick(outerDone, new Error('TODO'));
@@ -52,12 +50,7 @@ function composeDemakeBotImageReply(opts, outerDone) {
   }
 
   async.waterfall(
-    [
-      getImage,
-      makeDemakeOptsFromResponse,
-      demakeImage,
-      passTweetContent
-    ],
+    [getImage, makeDemakeOptsFromResponse, demakeImage, passTweetContent],
     outerDone
   );
 
@@ -80,7 +73,7 @@ function composeDemakeBotImageReply(opts, outerDone) {
 
   function passTweetContent(buffer, done) {
     var content = {
-      text: '@' +  incomingTweet.user.screen_name,
+      text: '@' + incomingTweet.user.screen_name,
       image: buffer
     };
     if (prefix) {

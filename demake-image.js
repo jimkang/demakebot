@@ -25,21 +25,19 @@ function demakeImage(opts, done) {
   function manipulateImage(error, image) {
     if (error) {
       done(error);
-    }
-    else {
+    } else {
       var scaleDownSize;
       var scaleUpSize;
       var exponent;
 
       if (probable.roll(20) === 0) {
         exponent = probable.roll(4) === 0 ? 2 : 3;
-      }
-      else {
+      } else {
         var largestOriginalDimension = width;
         if (largestOriginalDimension < height) {
           largestOriginalDimension = height;
         }
-        var nearestPowerOf2 = ~~(Math.log2(largestOriginalDimension));
+        var nearestPowerOf2 = ~~Math.log2(largestOriginalDimension);
         exponent = Math.round(nearestPowerOf2 * 0.6);
 
         if (exponent < 2) {
@@ -51,12 +49,23 @@ function demakeImage(opts, done) {
       scaleUpSize = Math.pow(2, exponent + 3 + probable.roll(5));
 
       console.log(
-        'width', width, 'height', height,
-        'exponent', exponent,
-        'scaleDownSize', scaleDownSize, 'scaleUpSize', scaleUpSize
+        'width',
+        width,
+        'height',
+        height,
+        'exponent',
+        exponent,
+        'scaleDownSize',
+        scaleDownSize,
+        'scaleUpSize',
+        scaleUpSize
       );
 
-      image.scaleToFit(scaleDownSize, scaleDownSize, Jimp.RESIZE_NEAREST_NEIGHBOR);
+      image.scaleToFit(
+        scaleDownSize,
+        scaleDownSize,
+        Jimp.RESIZE_NEAREST_NEIGHBOR
+      );
       image.scaleToFit(scaleUpSize, scaleUpSize, Jimp.RESIZE_NEAREST_NEIGHBOR);
       image.getBuffer(Jimp.MIME_PNG, done);
     }

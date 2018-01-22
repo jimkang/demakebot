@@ -17,14 +17,14 @@ function PostImage(createOpts) {
     postImageOpts.base64Image = buffer.toString('base64');
 
     if (createOpts.dryRun) {
-      const filename = 'image-output/would-have-posted-' +
-        (new Date()).toISOString().replace(/:/g, '-') +
+      const filename =
+        'image-output/would-have-posted-' +
+        new Date().toISOString().replace(/:/g, '-') +
         '.png';
       console.log('Writing out', filename, 'for altText:', createOpts.altText);
       fs.writeFileSync(filename, buffer);
       process.exit();
-    }
-    else {
+    } else {
       postImageToTwitter(postImageOpts, done);
     }
   }

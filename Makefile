@@ -7,7 +7,10 @@ SSHCMD = ssh $(USER)@$(SERVER)
 PRIVSSHCMD = ssh $(PRIVUSER)@$(SERVER)
 APPDIR = /opt/$(PROJECTNAME)
 
-pushall: sync set-permissions restart-remote
+# pushall: sync set-permissions restart-remote
+# 	git push origin master
+
+pushall: sync
 	git push origin master
 
 sync:
@@ -61,3 +64,6 @@ check-log:
 
 make-data-dir:
 	$(SSHCMD) "mkdir -p $(APPDIR)/data"
+
+prettier:
+	prettier --single-quote --write "**/*.js"

@@ -14,7 +14,7 @@ var dryRun = false;
 var tryCount = 0;
 
 if (process.argv.length > 2) {
-  dryRun = (process.argv.indexOf('--dry') !== -1);
+  dryRun = process.argv.indexOf('--dry') !== -1;
 }
 
 var twit = new Twit(config.twitter);
@@ -29,16 +29,11 @@ function go() {
   });
 
   var tasks;
-  var commonTasks = [
-    unpackImagePackage,
-    demakeImage,
-    post
-  ];
+  var commonTasks = [unpackImagePackage, demakeImage, post];
 
   if (probable.roll(8) === 0) {
     tasks = [getRandomApodImage].concat(commonTasks);
-  }
-  else {
+  } else {
     tasks = [getConcepts, getImageFromConcepts].concat(commonTasks);
   }
 
@@ -89,8 +84,7 @@ function wrapUp(error, data) {
     if (tryCount < 5) {
       console.log(tryCount, 'tries so far. Trying again!');
       callNextTick(go);
-    }
-    else {
+    } else {
       console.log('Hit max tries. Giving up.');
     }
   }
