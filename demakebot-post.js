@@ -63,8 +63,8 @@ function go() {
 
   function post(buffer, done) {
     PostImage({
-      twit: twit,
-      dryRun: dryRun,
+      twit,
+      dryRun,
       altText: concept,
       caption: concept
     })(buffer, done);

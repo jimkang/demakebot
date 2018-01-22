@@ -23,8 +23,10 @@
   "dependencies": {
     "async": "^2.0.1",
     "call-next-tick": "^1.1.2",
+    "d3-queue": "^3.0.7",
     "filtered-followback": "^1.3.5",
     "g-i-s": "^2.0.0",
+    "idmaker": "^0.1.1",
     "jimp": "^0.2.27",
     "lodash.clone": "^4.5.0",
     "lodash.curry": "^4.1.1",
@@ -37,6 +39,7 @@
     "random-apod": "^1.0.1",
     "reply-decision-kit": "^2.2.1",
     "request": "^2.73.0",
+    "static-web-archive-on-git": "^1.0.4",
     "tumblrwks": "^0.3.0",
     "twit": "^2.2.4",
     "wordnok": "^3.2.0"
